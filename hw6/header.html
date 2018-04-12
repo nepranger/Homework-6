@@ -1,0 +1,47 @@
+<!-- This is the menu bar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark" ng-init="checkifloggedin()">
+         <a class="navbar-brand" href="index.html">My Favorite Movies</a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+           <span class="navbar-toggler-icon"></span>
+         </button>
+       
+         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+           <ul class="navbar-nav mr-auto">
+                 <!-- active only if menuHighlight is = to 0; -->
+             <li class="nav-item" ng-class="{'active' : (menuHighlight == 0)}">
+               <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+             </li>
+             
+             <!--Menu item for adding movies, active if menuHighlight = 1 -->
+             <li class="nav-item" ng-class="{'active' : (menuHighlight == 1)}">
+               <a class="nav-link" href="newmovie.html">Add Movie</a>
+             </li>
+             
+             
+              <!--Menu item for adding accounts, active if menuHighlight = 2 -->
+             <li class="nav-item" ng-class="{'active' : (menuHighlight == 2)}" ng-show="isloggedin">
+               <a class="nav-link" href="newaccount.html">Add Account</a>
+             </li>
+
+             
+           </ul>
+              <form class="form-inline my-2 my-lg-0">
+              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              </form>
+           
+           
+           <ul class="navbar-nav">
+              <!--Menu item for loggin in accounts, active if menuHighlight = 3 -->
+             <li class="nav-item" ng-class="{'active' : (menuHighlight == 3)}" ng-show="!isloggedin">
+               <a class="nav-link" href="login.html">Login</a>
+             </li>
+             
+              <li class="nav-item" ng-show="isloggedin">
+               <a class="nav-link" href="" ng-click="logout()">Log out</a>
+             </li>
+              
+           </ul>
+
+         </div>
+       </nav>

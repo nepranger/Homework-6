@@ -1,0 +1,68 @@
+ <!doctype html>
+ 
+<!--ng-app "movies" defines the angular app that we are using. The name is defined in the movie.module.js -->   
+<html lang='en' ng-app="movies">
+<head>
+    <title>Log In - My Favorite Movies</title>
+    
+    <!-- These are the links to the bootstrap code -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+ 
+   <!-- link to angular -->
+   <script src='angular.min.js'></script>
+ 
+   <!-- angular code -->
+   <script src="movie.module.js"></script>
+   <script src="data.movie.controller.js"></script>
+   <!--movie. controller.js-allows us to display HTML code-->
+   <script src="movie.filter.js"></script>
+ </head>
+ <body>
+    
+<div class="container" ng-controller="dataControl">
+     
+ <!-- Header -->    
+<div ng-include ng-init="menuHighlight = 3;" src="'header.html'"></div>
+    
+    <div class="row">
+        <!-- Form to enter new account-->
+        <form name="accountForm" novalidate>
+         
+            <!-- username for account -->
+            <div class="form-group" ng-class="{'text-danger is-invalid': accountForm.username.$invalid && accountForm.username.$touched, 'text-success': !accountForm.username.$invalid && accountForm.username.$touched}">
+                <label>Username: </label>
+                <input type="text" class="form-control" ng-class="{'text-danger is-invalid': accountForm.username.$invalid && accountForm.username.$touched, 'text-success': !accountForm.username.$invalid && accountForm.username.$touched}" name="username" ng-model="account.username" ng-minlength="4" required/>
+                <p ng-show="accountForm.username.$invalid && accountForm.username.$touched" class="help-block">The username must be at least four characters long.</p>
+            </div>
+            
+            
+             <!-- password for account -->
+            <div class="form-group" ng-class="{'text-danger is-invalid': accountForm.password.$invalid && accountForm.password.$touched, 'text-success': !accountForm.password.$invalid && accountForm.password.$touched}">
+                <label>Password: </label>
+                <input type="password" class="form-control" ng-class="{'text-danger is-invalid': accountForm.password.$invalid && accountForm.password.$touched, 'text-success': !accountForm.password.$invalid && accountForm.password.$touched}" name="password" ng-model="account.password" ng-minlength="6" required/>
+                <p ng-show="accountForm.password.$invalid && accountForm.password.$touched" class="help-block">The password must be at least six characters long.</p>
+            </div>
+            
+            
+            
+            <!--newAccount is a function in the controller. Account refers to the word we used under ng-model in the input fields -->
+            <button class="btn btn-default" ng-click="login(account)" ng-disabled="accountForm.$invalid">Login</button>
+        </form>
+
+    </div>
+</div>
+    <!-- Footer -->
+    <div class="row">
+      <div class="card w-100">
+         <div class="card-body">
+           <p>
+             Please login to your account here. 
+           </p>
+        
+         </div>
+
+      </div>
+   </div>

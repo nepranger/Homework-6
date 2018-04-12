@@ -1,0 +1,110 @@
+<!doctype html>
+ 
+<!--ng-app "movies" defines the angular app that we are using. The name is defined in the movie.module.js -->   
+<html lang='en' ng-app="movies">
+<head>
+    <title>My Favorite Movies</title>
+    
+    <!-- These are the links to the bootstrap code -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+ 
+   <!-- link to angular -->
+   <script src='angular.min.js'></script>
+ 
+   <!-- angular code -->
+   <script src="movie.module.js"></script>
+   <script src="data.movie.controller.js"></script>
+   <!--movie. controller.js-allows us to display HTML code-->
+   <script src="movie.filter.js"></script>
+ </head>
+ <body>
+    <div class="containter" ng-controller="dataControl">
+     
+     <!-- Header -->    
+    <div ng-include ng-init="menuHighlight = 0;" src="'header.html'"></div>
+    
+    <div class="row">
+        <div class="card m-1" style='width: 24rem' ng-repeat="title in data.titles">
+          
+          <div ng-init="setEditMode(false, title);"></div>
+         
+            <div ng-if="!getEditMode(title)">
+                <div class='card-header'>
+                    {{title.title}}
+                </div>
+            
+                <!-- if we are here, we are not in edit mode -->
+                <div class='card-body'>
+                    <div class="embed-responsive embed-responsive-16by9">
+                     
+                    <span ng-bind-html="title.video | trustHtml"></span>
+                    </div>
+                    <p>Director: {{title.director}}</p>
+                    <p>Released: {{title.reldate}}</p>
+                    <button class="btn btn-primary" ng-click="setEditMode(true, title)" ng-disabled="editmovie != null" ng-show="isloggedin">Edit</button>
+                    <button class="btn btn-primary" ng-click="deleteMovie(title.title, title.id)" ng-show ="isloggedin">Delete</button>
+                </div>
+            </div>
+            
+            <!--E D I T    M O D E -->
+            <div ng-if="getEditMode(title)">
+             
+              <form name="newMovieForm" novalidate>
+             
+                     <div class='card-header'>
+                         <!-- Name of the movie -->
+                         <div class="form-group" ng-class="{'text-danger is-invalid': newMovieForm.title.$invalid && newMovieForm.title.$touched, 'text-success': !newMovieForm.title.$invalid && newMovieForm.title.$touched}">                                                                   
+                             <label>Title: </label>
+                             <input type="text" class="form-control" ng-class="{'text-danger is-invalid': newMovieForm.title.$invalid && newMovieForm.title.$touched, 'text-success': !newMovieForm.title.$invalid && newMovieForm.title.$touched}" name="title" ng-model="editmovie.title" ng-minlength="2" required/>
+                             <p ng-show="newMovieForm.title.$invalid && newMovieForm.title.$touched" class="help-block">The movie's title must be at least two characters long.</p>
+                         </div>
+                         
+                     </div>
+                  <!-- if we are here, we are in edit mode -->
+                     <div class='card-body'>
+                      
+
+                             <!--Director of the movie-->
+                             <div class="form-group" ng-class="{'text-danger is-invalid': newMovieForm.director.$invalid && newMovieForm.director.$touched, 'text-success': !newMovieForm.director.$invalid && newMovieForm.director.$touched}">
+                                 <label>Director: </label>
+                                 <input type="text" class="form-control" ng-class="{'text-danger is-invalid': newMovieForm.title.$invalid && newMovieForm.title.$touched, 'text-success': !newMovieForm.title.$invalid && newMovieForm.title.$touched}" name="director" ng-model="editmovie.director" ng-minlength="2" required/>
+                                 <p ng-show="newMovieForm.director.$invalid && newMovieForm.director.$touched" class="help-block">The movie's director must be at least two characters long.</p>
+                             </div>
+                            <!--Release date of the movie-->
+                            <div class="form-group" ng-class="{'text-danger is-invalid': newMovieForm.reldate.$invalid && newMovieForm.reldate.$touched, 'text-success': !newMovieForm.reldate.$invalid && newMovieForm.reldate.$touched}">
+                                <label>Released: </label>
+                                <input type="text" class="form-control" ng-class="{'text-danger is-invalid': newMovieForm.title.$invalid && newMovieForm.title.$touched, 'text-success': !newMovieForm.title.$invalid && newMovieForm.title.$touched}" name="reldate" ng-model="editmovie.reldate" ng-minlength="2" required/>
+                                <p ng-show="newMovieForm.reldate.$invalid && newMovieForm.reldate.$touched" class="help-block">The movie's release date must be at least two characters long.</p>
+                            </div>
+                            <!--Video of the movie-->
+                            <div class="form-group" ng-class="{'text-danger is-invalid': newMovieForm.video.$invalid && newMovieForm.video.$touched, 'text-success': !newMovieForm.video.$invalid && newMovieForm.video.$touched}">
+                                <label>Video: </label>
+                                <input type="text" class="form-control" ng-class="{'text-danger is-invalid': newMovieForm.title.$invalid && newMovieForm.title.$touched, 'text-success': !newMovieForm.title.$invalid && newMovieForm.title.$touched}" name="video" ng-model="editmovie.video" ng-minlength="2"/>
+                                <p ng-show="newMovieForm.video.$invalid && newMovieForm.video.$touched" class="help-block">The movie's video ID must be at least two characters long.</p>
+                            </div>
+                         <button class="btn btn-primary" ng-click="editMovie(editmovie)">Save</button>
+                         <button class="btn btn-primary" ng-click="setEditMode(false, title)">Cancel</button>
+                     </div>
+                
+              </form>
+            </div>
+            
+        </div>
+    </div>
+    
+    <div class="row">
+       <div class="card w-100">
+          <div class="card-body">
+            <p>
+              I hope you watch at least one of my favorite movies!
+            </p>
+        
+          </div>
+
+       </div>
+    </div>
+</body>
+</html>
