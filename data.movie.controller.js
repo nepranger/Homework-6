@@ -7,6 +7,9 @@
     var myApp = angular.module("movies");
     myApp.controller("dataControl",function($scope, $http, $window) {
         //define data for the app
+
+        $scope.deleteMovie = deleteMovie;
+
         $http.get('getmovies.php')
             .then(function(response) {
                 $scope.data = response.data.value;
@@ -51,12 +54,12 @@
        };
        
        
-       //function to delete a player. It receives the players name and id and calls a php web api to complete deletion from the database.
-       $scope.deleteMovie = function(title, id) {
-        if (confirm("Are you sure you want to delete " + title + "?")){
-        
-                $http.post("deletemovie.php", {"id" : id})
-                    .then(function(response) {
+        //function to delete a player. It receives the players name and id and calls a php web api to complete deletion from the database.
+        function deleteMovie(title, id) {
+            if (confirm("Are you sure you want to delete " + title + "?")) {
+
+                $http.post("deletemovie.php", { "id": id })
+                    .then(function (response) {
                         if (response.status == 200) {
                             if (response.data.status == 'error') {
                                 alert('error:' + response.data.message);
@@ -65,12 +68,12 @@
                                 $window.location.href = "index.html";
                             }
                         } else {
-                           alert('unexpected error'); 
+                            alert('unexpected error');
                         }
                     }
-                );
-            } 
-       };
+                    );
+            }
+        };
        
         //function to edit new movie information to web api to add it to the database
        $scope.editMovie = function(movieDetails) {
